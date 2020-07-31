@@ -3,6 +3,7 @@ package makeProblem
 import (
 	"fmt"
 	"testing"
+	"reflect"
 	"../set"
 )
 
@@ -50,5 +51,20 @@ func TestMakeBord(t *testing.T) {
 				return
 			}
 		}
+	}
+}
+
+func TestMakeProblem(t *testing.T) {
+	bord,err := MakeBord()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	conf,initi := MakeProblem(bord)
+	for i := 0;i < 9;i ++ {
+		fmt.Println(initi[i])
+	}
+	if !reflect.DeepEqual(bord, conf) {
+		t.Error("入力bordと出力結果が一致しない")
 	}
 }
