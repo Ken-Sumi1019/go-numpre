@@ -24,8 +24,8 @@ func ProductSetToInt(data1 *set.Set,data2 *set.Set,data3 *set.Set) []int {
 	return result
 }
 
-func initSet(s *set.Set)  {
-	for i := 1;i <= 9;i ++ {
+func initSet(s *set.Set,baseNumber int)  {
+	for i := 1;i <= baseNumber*baseNumber;i ++ {
 		s.Add(i)
 	}
 }
@@ -47,7 +47,7 @@ func Shuffle2D(data [][]int) {
 }
 
 // 完成した盤面を作成する
-func (bord *Bord) MakeBord(baseNumber int) (error) {
+func MakeBord(baseNumber int) (*Bord,error) {
 	side := make([]*set.Set,baseNumber * baseNumber)
 	vertical := make([]*set.Set,baseNumber * baseNumber)
 	lattice := make([][]*set.Set,baseNumber)
@@ -57,34 +57,34 @@ func (bord *Bord) MakeBord(baseNumber int) (error) {
 			lattice[i][j] = set.MakeSet()
 			side[i*baseNumber + j] = set.MakeSet()
 			vertical[i*baseNumber + j] = set.MakeSet()
-			initSet(lattice[i][j])
-			initSet(side[i*baseNumber + j])
-			initSet(vertical[i*baseNumber+j])
+			initSet(lattice[i][j],baseNumber)
+			initSet(side[i*baseNumber + j],baseNumber)
+			initSet(vertical[i*baseNumber+j],baseNumber)
 		}
 	}
 	data := make([][]int,baseNumber * baseNumber)
 	for i := 0;i < baseNumber * baseNumber;i ++ {
 		data[i] = make([]int,baseNumber * baseNumber)
 	}
-	fillBord(data,0,0,side,vertical,lattice)
-	bord.data = data
-	bord.baseNumber = baseNumber
-	return nil
+	fillBord(data,0,0,baseNumber,side,vertical,lattice)
+	result := &Bord{baseNumber:baseNumber,data:data}
+	return result,nil
 }
 
 // 再帰的に盤面に数字を埋める
-func fillBord(data [][]int,idx,jdx int,side,vertical []*set.Set,lattice [][]*set.Set) (error) {
+func fillBord(data [][]int,idx,jdx,baseNumber int,side,vertical []*set.Set,lattice [][]*set.Set) (error) {
 
-	vals := ProductSetToInt(side[idx],vertical[jdx],lattice[idx/3][jdx/3])
+	vals := ProductSetToInt(side[idx],vertical[jdx],lattice[idx/baseNumber][jdx/baseNumber])
+	side_max := baseNumber * baseNumber - 1
 	if len(vals) == 0 {
 		return errors.New("ダメです")
-	} else if len(vals) != 0 && idx == 8 && jdx == 8 {
+	} else if len(vals) != 0 && idx == side_max && jdx == side_max {
 		data[idx][jdx] = vals[0]
 		return nil
 	}
 	Shuffle(vals)
 	idx_next := 0;jdx_next := 0
-	if jdx == 8 {
+	if jdx == side_max {
 		idx_next = idx + 1
 		jdx_next = 0
 	} else {
@@ -92,13 +92,13 @@ func fillBord(data [][]int,idx,jdx int,side,vertical []*set.Set,lattice [][]*set
 		jdx_next = jdx + 1
 	}
 	for i := 0;i < len(vals);i ++ {
-		side[idx].Erase(vals[i]);vertical[jdx].Erase(vals[i]);lattice[idx/3][jdx/3].Erase(vals[i])
+		side[idx].Erase(vals[i]);vertical[jdx].Erase(vals[i]);lattice[idx/baseNumber][jdx/baseNumber].Erase(vals[i])
 		data[idx][jdx] = vals[i]
-		woi :=  fillBord(data,idx_next,jdx_next,side,vertical,lattice)
+		woi :=  fillBord(data,idx_next,jdx_next,baseNumber,side,vertical,lattice)
 		if woi == nil {
 			return nil
 		}
-		side[idx].Add(vals[i]);vertical[jdx].Add(vals[i]);lattice[idx/3][jdx/3].Add(vals[i])
+		side[idx].Add(vals[i]);vertical[jdx].Add(vals[i]);lattice[idx/baseNumber][jdx/baseNumber].Add(vals[i])
 	}
 	return errors.New("ダメです")
 }

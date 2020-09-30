@@ -92,7 +92,8 @@ func BordMake() ([][]int) {
 	}
 	Shuffle(indexes)
 
-	bord,err := MakeBord()
+	bord_,err := MakeBord(3)
+	bord := bord_.data
 
 	if err != nil {
 		fmt.Println(err)

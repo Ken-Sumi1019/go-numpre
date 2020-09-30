@@ -55,7 +55,8 @@ func possibilityData(confirmBord [][]int,possibleNumbers [][][]int)  {
 }
 
 // 数字を抜いてみて答えが一意に決まる場合には抜く
-func MakeProblem(bord [][]int) ([][]int,[][]int) {
+func (bord_ *Bord) MakeProblem() ([][]int,[][]int) {
+	bord := bord_.data
 	possibleNumbers := make([][][]int,9)
 	confirmBord := make([][]int,9)
 	initialBord := make([][]int,9)
