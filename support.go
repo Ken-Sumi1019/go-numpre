@@ -67,7 +67,7 @@ func MakeBord(baseNumber int) (*Bord,error) {
 		data[i] = make([]int,baseNumber * baseNumber)
 	}
 	fillBord(data,0,0,baseNumber,side,vertical,lattice)
-	result := &Bord{baseNumber:baseNumber,data:data}
+	result := &Bord{baseNumber:baseNumber,baseNumberSquare:baseNumber*baseNumber,data:data}
 	return result,nil
 }
 

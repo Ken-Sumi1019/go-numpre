@@ -55,8 +55,8 @@ func possibilityData(confirmBord [][]int,possibleNumbers [][][]int)  {
 }
 
 // 数字を抜いてみて答えが一意に決まる場合には抜く
-func (bord_ *Bord) MakeProblem() ([][]int,[][]int) {
-	bord := bord_.data
+func (bord *Bord) MakeProblem() ([][]int,[][]int) {
+	//bord := bord_.data
 	possibleNumbers := make([][][]int,9)
 	confirmBord := make([][]int,9)
 	initialBord := make([][]int,9)
@@ -84,8 +84,8 @@ func (bord_ *Bord) MakeProblem() ([][]int,[][]int) {
 				break
 			}
 		}
-		confirmBord[x][y] = bord[x][y]
-		initialBord[x][y] = bord[x][y]
+		confirmBord[x][y] = bord.data[x][y]
+		initialBord[x][y] = bord.data[x][y]
 		check := true
 		for check {
 			check = false
@@ -107,7 +107,7 @@ func (bord_ *Bord) MakeProblem() ([][]int,[][]int) {
 					check = true
 					continue
 				}
-				num := bord[i][j]
+				num := bord.data[i][j]
 				tate,yoko,waku,wakuI,wakuJ := 0,0,0,(i/3)*3,(j/3)*3
 				for k := 0;k < 9;k ++ {
 					// 縦

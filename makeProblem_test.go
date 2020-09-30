@@ -9,7 +9,7 @@ import (
 
 func TestMakeBord(t *testing.T) {
 	for i := 0;i < 10;i ++ {
-		data,err := MakeBord()
+		data,err := MakeBord(3)
 		if err != nil {
 			t.Error(err)
 			return
