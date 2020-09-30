@@ -1,10 +1,10 @@
-package makeProblem
+package numpre
 
 import (
 	"fmt"
 	"testing"
 	"reflect"
-	"../set"
+	"./set"
 )
 
 func TestMakeBord(t *testing.T) {

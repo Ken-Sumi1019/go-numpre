@@ -48,6 +48,16 @@ func (v *Set) Product(w *Set) *Set {
 	return result
 }
 
+func (v *Set)Difference(w *Set) *Set {
+	result := MakeSet()
+	for k,_ := range v.Data {
+		if !w.Exist(k) {
+			result.Add(k)
+		}
+	}
+	return result
+}
+
 func (v *Set)ToList() []interface{} {
 	result := make([]interface{},len(v.Data))
 	idx := 0
